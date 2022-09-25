@@ -1,0 +1,105 @@
+import time
+kahveler={
+    "ESPRESSO":  20,
+    "CAPPICCINO": 22,
+    "AMERICANO": 15,
+    "TÜRK KAHVESİ": 20,
+    "CAFE LATTE": 22,
+    "MOCHA": 17
+} 
+bardak_ebati= ["S","M","L"]
+def menu():
+  print("--------- MENÜ----------")
+  for a,b in kahveler.items():
+    print("{:<15}:{:^15}".format(a, b))
+def hesap(urun, adet, ebat):
+  if urun not in kahveler.keys():
+    return "Kahve bulanamamaktadır. Lütfen tekrar deneyin."
+  else:
+    if ebat=="S":
+      return kahveler[urun]*adet
+    elif ebat=="M":
+      return kahveler[urun]*adet*1.5
+    elif ebat=="L":
+      return kahveler[urun]*adet*2
+def satin_alma():
+  menu()
+  
+  fiyat=0
+  while True:
+    tr= ["i"]
+    eng= ["ı"]
+    x = input("Satın almak istediğiniz kahveyi giriniz: ").upper().replace(tr[0],eng[0])
+    if x not in kahveler.keys():
+      print("Kahve bulanamamaktadır. Lütfen tekrar deneyin.")
+  
+    elif x == "Q":
+      print("Ana sayfaya yönlendiriliyorsunuz...")
+      time.sleep(1.5)
+      break
+
+    else:
+      y = input("Bardak ebatını giriniz: ").upper()
+      z = int(input("Kaç adet eklemek istediğinizi giriniz: "))
+      guncel_fiyat= hesap(x,z,y)
+      if guncel_fiyat== None:
+        print("Hatalı tuşlama yaptınız. Lütfen tekrar deneyin.")
+      else:
+        print("Ücret: ", guncel_fiyat)
+        a = str(input("Satın almayı onaylıyor musunuz?(Evet/Hayır)")).upper().replace(tr[0],eng[0])
+        if a=="HAYIR": 
+          print("Satın alma işlemi iptal edildi.")
+        if a=="EVET":
+          fiyat += guncel_fiyat
+          print("Ara Toplam: ", fiyat)
+          time.sleep(2)
+          print("Fişiniz Hazırlanıyor. Afiyet Olsun...")
+      j = input("Ana menüye dönmek için 'q' yu tuşlayın.").upper() 
+      if j == "Q":
+        print("Ana sayfaya yönlendiriliyorsunuz...")
+        time.sleep(1.5)
+        break
+
+    
+class Komut():
+  def __init__(self, otomat_durum="Kapalı"):
+    self.otomat_durum= otomat_durum
+  def otomat_acma(self):
+    if (self.otomat_durum == "Açık"):
+      print("Otomat zaten açık durumdadır.")
+    else:
+      print("Otomat açılıyor...")
+      time.sleep(3)
+      print("Otomat açıldı.")
+      self.otomat_durum="Açık"
+  def otomat_kapama(self):
+    if (self.otomat_durum=="Kapalı"):
+      print("Otomat zaten kapalı durumdadır.")
+    else:
+      print("Otomat kapanıyor...")
+otomat = Komut()
+def kontrol():
+  print("""
+  ...Hoşgeldiniz...
+  Otomatı açmak için ... 1'i
+  Otomatı kapatmak için ... 2'yi
+  Menüyü görüntülemek için ... 3'ü
+  Kahve almak için ... 4'ü
+  Çıkış yapmak için ... 0'ı
+  tuşlayınız.
+  """)
+  while True:
+    kontrol = str(input("Tercihinizi giriniz: "))
+    if kontrol == "1":
+      otomat.otomat_acma()
+    elif kontrol=="2":
+      otomat.otomat_kapama()
+      break
+    elif kontrol=="3":
+      menu()
+    elif kontrol=="4":
+      satin_alma()
+    elif kontrol=="0":
+      print("Bizi tercih ettiğiniz için teşekkür ederiz. İyi günler :)")
+      break
+kontrol()
